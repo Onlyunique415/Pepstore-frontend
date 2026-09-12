@@ -1,0 +1,76 @@
+.customer-care-page {
+  padding: 40px 60px;
+  max-width: 700px;
+}
+
+.customer-care-page h1 {
+  font-family: 'Poppins', sans-serif;
+  color: #14532d;
+  margin-bottom: 24px;
+}
+
+.faq-section {
+  margin-bottom: 40px;
+}
+
+.faq-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 16px 0;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  color: #111827;
+}
+
+.faq-answer {
+  padding-bottom: 16px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+}
+
+.contact-form button {
+  background: #16a34a;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.success-message {
+  background: #f0fdf4;
+  color: #16a34a;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .customer-care-page {
+    padding: 24px 20px;
+  }
+}
