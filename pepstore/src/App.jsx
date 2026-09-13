@@ -22,6 +22,7 @@ import Overview from "./pages/admin/Overview";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminCustomers from "./pages/admin/AdminCustomers";
+import AdminPromotions from "./pages/admin/AdminPromotions";
 
 
 
@@ -47,6 +48,7 @@ function App() {
           <Route path="/forgot-password" element={<Forgotpassword />} />
           <Route path="/orders" element={<Myorders />} />
           <Route path="/orders/:id" element={<Orderdetail />} />
+     
           <Route
      path="/admin"
          element={
@@ -59,6 +61,7 @@ function App() {
   <Route path="products" element={<AdminProducts />} />
  <Route path="orders" element={<AdminOrders />} />
   <Route path="customers" element={<AdminCustomers />} />
+  <Route path="promotions" element={<AdminPromotions />} />
        </Route>
         </Routes>
         </div>

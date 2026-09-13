@@ -69,14 +69,34 @@ function Shop() {
                 <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-1">
                   {product.name}
                 </h3>
-                <p className="font-bold text-gray-900 dark:text-gray-100">
-                  Retail: {formatNaira(product.retail_price)}
-                </p>
+                {product.discount_percent ? (
+  <div className="mb-1">
+    <span className="text-xs line-through text-gray-400 mr-2">
+      {formatNaira(product.retail_price)}
+    </span>
+    <span className="font-bold text-red-600">
+      {formatNaira(product.discounted_retail_price)}
+    </span>
+    <span className="text-[10px] bg-red-100 text-red-700 font-bold px-1.5 py-0.5 rounded ml-1">
+      -{product.discount_percent}%
+    </span>
+       </div>
+     ) : (
+  <p className="font-bold text-gray-900 dark:text-gray-100">
+    Retail: {formatNaira(product.retail_price)}
+     </p>
+    )}
                 <p className="text-xs text-green-600 mb-3">
                   Wholesale: {formatNaira(product.wholesale_price)} (min {product.wholesale_min_quantity})
                 </p>
                 <button
-                  onClick={() => addToCart(product)}
+                  onClick={() =>
+        addToCart(
+            product.discount_percent
+               ? { ...product, retail_price: product.discounted_retail_price }
+               : product
+          )
+       }
                   className="mt-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded-lg text-sm"
                 >
                   Add to Cart

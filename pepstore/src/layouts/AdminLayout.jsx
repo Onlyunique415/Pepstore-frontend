@@ -6,6 +6,7 @@ const adminLinks = [
   { to: "/admin/products", label: "Products", icon: Package },
   { to: "/admin/orders", label: "Orders", icon: ShoppingBag },
   { to: "/admin/customers", label: "Customers", icon: Users },
+  { to: "/admin/promotions", label: "Promotions", icon: Package },
 ];
 
 function AdminLayout() {
