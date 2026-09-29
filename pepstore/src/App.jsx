@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext";
 import Checkout from "./pages/Checkout";
 import Forgotpassword from "./pages/Forgotpassword";
+import ResetPassword from "./pages/ResetPassword";
 import Orderdetail from "./pages/Orderdetail";
 import Myorders from "./pages/Myorders";
 import AdminRoute from "./components/AdminRoute";
@@ -23,6 +24,7 @@ import AdminProducts from "./pages/admin/AdminProducts";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminCustomers from "./pages/admin/AdminCustomers";
 import AdminPromotions from "./pages/admin/AdminPromotions";
+import VerifyEmail from "./pages/VerifyEmail";
 
 
 
@@ -46,8 +48,10 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<Forgotpassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/orders" element={<Myorders />} />
           <Route path="/orders/:id" element={<Orderdetail />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
      
           <Route
      path="/admin"

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../api";
 import { DollarSign, ShoppingBag, Users, Package, AlertTriangle } from "lucide-react";
 
 function formatNaira(amount) {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import api from "../../api";
 import { Plus, Pencil, Trash2, X } from "lucide-react";
 
 function formatNaira(amount) {
@@ -28,8 +29,10 @@ function AdminProducts() {
   const [error, setError] = useState("");
 
   function loadProducts() {
-    axios.get("http://localhost/pepstore-api/products.php").then((res) => setProducts(res.data));
-  }
+  axios
+    .get("http://localhost/pepstore-api/products.php")
+    .then((res) => setProducts(res.data));
+}
 
   useEffect(() => {
     loadProducts();
@@ -74,7 +77,10 @@ function AdminProducts() {
         setUploading(true);
         const uploadData = new FormData();
         uploadData.append("image", imageFile);
-        const uploadRes = await axios.post("http://localhost/pepstore-api/upload_image.php", uploadData);
+        const uploadRes = await api.post(
+  "http://localhost/pepstore-api/upload_image.php",
+  uploadData
+    );
         imageFilename = uploadRes.data.filename;
         setUploading(false);
       }
@@ -82,9 +88,9 @@ function AdminProducts() {
       const payload = { ...form, image: imageFilename };
 
       if (form.id) {
-        await axios.put("http://localhost/pepstore-api/admin_products.php", payload);
+        await api.put("http://localhost/pepstore-api/admin_products.php", payload);
       } else {
-        await axios.post("http://localhost/pepstore-api/admin_products.php", payload);
+        await api.post("http://localhost/pepstore-api/admin_products.php", payload);
       }
 
       setShowForm(false);
@@ -97,7 +103,7 @@ function AdminProducts() {
 
   async function handleDelete(id) {
     if (!confirm("Delete this product? This cannot be undone.")) return;
-    await axios.delete("http://localhost/pepstore-api/admin_products.php", { data: { id } });
+    await api.delete("http://localhost/pepstore-api/admin_products.php", { data: { id } });
     loadProducts();
   }
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import api from "../api";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -8,6 +9,10 @@ function Login() {
   const [form, setForm] = useState({ name: "", email: "", password: "", phone: "" });
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [unverified, setUnverified] = useState(false);
+  const [resendMessage, setResendMessage] = useState("");
+  const [resending, setResending] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
 
@@ -15,10 +20,26 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
+  async function handleResend() {
+  setResendMessage("");
+  setResending(true);
+  try {
+    const res = await axios.post("http://localhost/pepstore-api/resend_verification.php", {
+      email: form.email,
+    });
+    setResendMessage(res.data.message);
+  } catch (err) {
+    setResendMessage(err.response?.data?.error || "Failed to resend email.");
+  } finally {
+    setResending(false);
+  }
+}
+
   async function handleSubmit(e) {
     e.preventDefault();
     setMessage("");
     setError("");
+    setSubmitting(true);
 
     const url =
       mode === "login"
@@ -26,7 +47,10 @@ function Login() {
         : "http://localhost/pepstore-api/register.php";
 
     try {
-      const response = await axios.post(url, form);
+      const response =
+  mode === "login"
+    ? await api.post(url, form)
+    : await axios.post(url, form);
       setMessage(response.data.message);
 
       if (mode === "login") {
@@ -36,8 +60,11 @@ function Login() {
         setMode("login");
       }
     } catch (err) {
-      setError(err.response?.data?.error || "Something went wrong. Try again.");
-    }
+  setError(err.response?.data?.error || "Something went wrong. Try again.");
+  setUnverified(err.response?.data?.unverified || false);
+   } finally {
+  setSubmitting(false);
+   }
   }
 
   return (
@@ -62,8 +89,27 @@ function Login() {
       </div>
 
       {message && <p className="bg-green-50 text-green-700 p-3 rounded-lg mb-4 text-sm">{message}</p>}
-      {error && <p className="bg-red-50 text-red-600 p-3 rounded-lg mb-4 text-sm">{error}</p>}
-
+      {error && (
+  <div className="bg-red-50 p-3 rounded-lg mb-4 text-sm">
+    <p className="text-red-600">{error}</p>
+    {unverified && (
+  <button
+    type="button"
+    onClick={handleResend}
+    disabled={resending}
+    className="flex items-center gap-2 text-green-700 font-semibold underline mt-1 disabled:opacity-60 disabled:no-underline"
+  >
+    {resending && (
+      <span className="w-3.5 h-3.5 border-2 border-green-700 border-t-transparent rounded-full animate-spin"></span>
+    )}
+    {resending ? "Sending..." : "Resend verification email"}
+  </button>
+   )}
+  </div>
+  )}
+   {resendMessage && (
+  <p className="bg-green-50 text-green-700 p-3 rounded-lg mb-4 text-sm">{resendMessage}</p>
+  )}
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {mode === "register" && (
           <input
@@ -79,7 +125,7 @@ function Login() {
         <input
           type="email"
           name="email"
-          placeholder="Email"
+          placeholder="Email as in example@gmail.com"
           value={form.email}
           onChange={handleChange}
           required
@@ -87,9 +133,11 @@ function Login() {
         />
         {mode === "register" && (
           <input
-            type="text"
+            type="tel"
+            maxLength={11}
             name="phone"
-            placeholder="Phone Number"
+            placeholder="Phone Number only nigerian phone number accepted"
+            pattern="(070|071|080|081|090|091)\d{8}$"
             value={form.phone}
             onChange={handleChange}
             className="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg p-3"
@@ -98,9 +146,10 @@ function Login() {
         <input
           type="password"
           name="password"
-          placeholder="Password"
+          placeholder="Password up to 8 characters"
           value={form.password}
           onChange={handleChange}
+          minLength={8}
           required
           className="border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded-lg p-3"
         />
@@ -113,9 +162,19 @@ function Login() {
 
         <button
           type="submit"
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg"
+          disabled={submitting}
+          className="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg disabled:opacity-60"
         >
-          {mode === "login" ? "Login" : "Create Account"}
+          {submitting && (
+            <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+          )}
+          {submitting
+            ? mode === "login"
+              ? "Logging in..."
+              : "Creating account..."
+            : mode === "login"
+              ? "Login"
+              : "Create Account"}
         </button>
       </form>
 

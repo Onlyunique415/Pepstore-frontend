@@ -30,8 +30,8 @@ function Checkout() {
   );
 
   const deliveryFees = {
-    "Nsukka": 1500,
-    "Other Enugu": 2000,
+    "Nsukka": 3000,
+    "Other Enugu": 5000,
   };
   const deliveryFee = deliveryFees[address.city] || 0;
   const grandTotal = total + deliveryFee;
@@ -146,6 +146,7 @@ function Checkout() {
         <input
           type="text"
           name="phone"
+          pattern="(070|071|080|081|090|091)\d{8}$"
           placeholder="Phone Number"
           value={address.phone}
           onChange={handleChange}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import api from "../../api";
 import { Plus, Pencil, Trash2, X } from "lucide-react";
 
 const emptyForm = {
@@ -19,7 +20,7 @@ function AdminPromotions() {
   const [form, setForm] = useState(emptyForm);
 
   function loadPromotions() {
-    axios.get("http://localhost/pepstore-api/admin_promotions.php").then((res) => setPromotions(res.data));
+    api.get("http://localhost/pepstore-api/admin_promotions.php").then((res) => setPromotions(res.data));
   }
 
   useEffect(() => {
@@ -64,9 +65,9 @@ function AdminPromotions() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (form.id) {
-      await axios.put("http://localhost/pepstore-api/admin_promotions.php", form);
+      await api.put("http://localhost/pepstore-api/admin_promotions.php", form);
     } else {
-      await axios.post("http://localhost/pepstore-api/admin_promotions.php", form);
+      await api.post("http://localhost/pepstore-api/admin_promotions.php", form);
     }
     setShowForm(false);
     loadPromotions();
@@ -74,7 +75,7 @@ function AdminPromotions() {
 
   async function handleDelete(id) {
     if (!confirm("Delete this promotion?")) return;
-    await axios.delete("http://localhost/pepstore-api/admin_promotions.php", { data: { id } });
+    await api.delete("http://localhost/pepstore-api/admin_promotions.php", { data: { id } });
     loadPromotions();
   }
 

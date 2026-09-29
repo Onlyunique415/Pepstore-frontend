@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../api";
 import { Pencil, Trash2, X } from "lucide-react";
 
 function formatNaira(amount) {
